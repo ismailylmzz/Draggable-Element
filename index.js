@@ -1,48 +1,93 @@
-//Make the DIV element draggagle:
-dragElement(document.getElementById("drag"));
-
-function dragElement(elmnt) {
-  var pos1 = 0,
-    pos2 = 0,
-    pos3 = 0,
-    pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    /* if present, the header is where you move the DIV from:*/
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    /* otherwise, move the DIV from anywhere inside the DIV:*/
-    elmnt.onmousedown = dragMouseDown;
+class Draggable {
+  constructor(elementSelector, targetSelector) {
+    this.element = document.querySelector(elementSelector);
+    this.target = document.querySelector(targetSelector);
+    this.isPinned = false;
+    
+    this.init();
   }
 
-  function dragMouseDown(e) {
+  init() {
+    this.setupInitialPosition();
+    this.addEventListeners();
+  }
+
+  setupInitialPosition() {
+    this.element.style.position = "fixed";
+    this.element.style.top = "100px"; // Default initial position
+    this.element.style.left = "100px";
+  }
+
+  addEventListeners() {
+    const pinButton = this.element.querySelector("#pin");
+    const header = this.element.querySelector("#dragheader");
+
+    if (pinButton) {
+      pinButton.addEventListener("click", () => this.togglePin());
+    }
+
+    if (header) {
+      header.onmousedown = (e) => this.dragMouseDown(e);
+    }
+  }
+
+  togglePin() {
+    this.isPinned = !this.isPinned;
+    if (this.isPinned) {
+      // Pin the element at the target's position with padding
+      this.element.style.top = `${this.target.offsetTop + 10}px`;
+      this.element.style.left = `${this.target.offsetLeft + this.target.offsetWidth - this.element.offsetWidth - 10}px`;
+      this.element.classList.add("pinned");
+    } else {
+      // Allow dragging again
+      this.element.classList.remove("pinned");
+    }
+  }
+
+  dragMouseDown(e) {
+    if (this.isPinned) return;
+
     e = e || window.event;
     e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+    document.onmouseup = () => this.closeDragElement();
+    document.onmousemove = (e) => this.elementDrag(e);
   }
 
-  function elementDrag(e) {
+  elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-    elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+    const pos1 = this.pos3 - e.clientX;
+    const pos2 = this.pos4 - e.clientY;
+    this.pos3 = e.clientX;
+    this.pos4 = e.clientY;
+
+    // Calculate new position
+    let newTop = this.element.offsetTop - pos2;
+    let newLeft = this.element.offsetLeft - pos1;
+
+    // Constrain to window boundaries
+    const maxX = window.innerWidth - this.element.offsetWidth;
+    const maxY = window.innerHeight - this.element.offsetHeight;
+
+    if (newTop < 0) newTop = 0;
+    if (newLeft < 0) newLeft = 0;
+    if (newTop > maxY) newTop = maxY;
+    if (newLeft > maxX) newLeft = maxX;
+
+    // Update position
+    this.element.style.top = `${newTop}px`;
+    this.element.style.left = `${newLeft}px`;
   }
 
-  function closeDragElement() {
-    /* stop moving when mouse button is released:*/
+  closeDragElement() {
     document.onmouseup = null;
     document.onmousemove = null;
   }
 }
 
-function togglePin() {}
+// Example usage
+document.addEventListener("DOMContentLoaded", () => {
+  new Draggable("#drag", "body"); // Pass the element and target selectors
+});

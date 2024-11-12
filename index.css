@@ -15,9 +15,39 @@
 }
 
 #down-arrow {
+    display: inline-block !important;
     transition: transform 0.3s ease;
 }
 .rotate-arrow {
     transform: rotate(-90deg);
 }
 
+.pinned {
+    /* Pinliyken imleci değiştir */
+    cursor: not-allowed; 
+  }
+  
+  @keyframes rotatePin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(45deg);
+    }
+  }
+
+  @keyframes rotatePinBack {
+    from {
+      transform: rotate(45deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+  .rotate-pin{
+    animation: rotatePin 0.3s forwards;
+  }
+
+  .rotate-pin-back {
+    animation: rotatePinBack 0.3s forwards;
+  }
