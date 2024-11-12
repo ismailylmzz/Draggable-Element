@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="vendors/bootstrap-5.3.3-dist/css/bootstrap.min.css"
+    />
+    <script src="vendors/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="vendors/jquery-3.7.1.min.js"></script>
+  </head>
+  <body>
+    <div id="drag" class="" style="min-width: 200px">
+      <div id="dragheader" class="d-flex justify-content-between">
+        <div class="ms-2">Bilgi Tablosu</div>
+        <div class="me-2">
+          <button
+            id="pin"
+            class="btn btn-link p-0"
+            data-bs-toggle="collapse"
+            href="#collapseExample"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+          >
+            <svg
+              id="down-arrow"
+              class="text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="collapse" id="collapseExample">
+        <table class="table table-hover m-0">
+          <thead>
+            <tr>
+              <th>Değer</th>
+              <th>Açıklama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5</td>
+              <td>Çok İyi</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+      $(document).ready(() => {
+        $("#pin").click(() => {
+          $("#down-arrow").toggleClass("rotate-arrow");
+        });
+      });
+    </script>
+  </body>
+</html>
