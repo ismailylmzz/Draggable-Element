@@ -14,8 +14,10 @@ class Draggable {
 
   setupInitialPosition() {
     this.element.style.position = "fixed";
-    this.element.style.top = "100px"; // Default initial position
-    this.element.style.left = "100px";
+    // Default initial position
+    this.element.style.top = "25px"; 
+    this.element.style.left =  "25px";
+
   }
 
   addEventListeners() {

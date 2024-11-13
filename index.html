@@ -18,18 +18,16 @@
     <script src="vendors/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="vendors/node_modules/jquery/dist/jquery.min.js"></script>
   </head>
-  <body>
+  <body class="" style="max-width: 100% !important; ">
     <div>
       <div id="drag" class="draggable-element" style="min-width: 200px">
         <div id="dragheader" class="d-flex justify-content-between">
           <div class="ms-2">Bilgi Tablosu</div>
           <div>
-            <button
-              id="pin"
-              class="btn btn-link p-0"
-              role="button"
-            >
-              <i class="bi bi-pin-fill text-white d-inline-block"></i>
+            <button id="pin" class="btn btn-link p-0" role="button">
+              <i
+                class="bi bi-pin-fill text-white d-inline-block rotate-pin-back"
+              ></i>
             </button>
           </div>
           <div class="me-2">
@@ -42,7 +40,7 @@
               aria-expanded="false"
               aria-controls="collapseExample"
             >
-              <i id="down-arrow" class="bi bi-chevron-left text-white"></i>
+              <i id="chevron-arrow" class="bi bi-chevron-left text-white"></i>
             </button>
           </div>
         </div>
@@ -63,31 +61,39 @@
           </table>
         </div>
       </div>
-      
     </div>
 
     <script src="index.js"></script>
     <script>
+      function pin(icon) {
+        icon.removeClass("rotate-pin-back").addClass("rotate-pin");
+
+        // uncollapse info table
+        if (!$("#chevron-arrow").hasClass("rotate-arrow") === true){
+          $("#_collapse").trigger("click");
+        }
+      }
+      function unPin(icon) {
+        icon.removeClass("rotate-pin").addClass("rotate-pin-back");
+      }
+
       $(document).ready(() => {
-        new Draggable("#drag", "body");
-        
+        let dragInfo = new Draggable("#drag", "body");
+
         $("#_collapse").click(() => {
-          $("#down-arrow").toggleClass("rotate-arrow");
+          $("#chevron-arrow").toggleClass("rotate-arrow");
         });
 
         $("#pin").click(() => {
           const icon = $("#pin i");
 
-          if (icon.hasClass("bi-pin-fill")) {
-            icon
-              .removeClass("bi-pin-fill rotate-pin-back")
-              .addClass("bi-pin-angle-fill rotate-pin");
+          if (icon.hasClass("rotate-pin")) {
+            unPin(icon);
           } else {
-            icon
-              .removeClass("bi-pin-angle-fill rotate-pin")
-              .addClass("bi-pin-fill rotate-pin-back");
+            pin(icon);
           }
         });
+
       });
     </script>
   </body>
